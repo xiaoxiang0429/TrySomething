@@ -1,0 +1,6 @@
+include ':CommonRes'
+include ':CommonSDK'
+include ':module_base'
+include ':viewpager2'
+include ':app'
+rootProject.name = "TTestDemo"
