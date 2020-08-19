@@ -6,24 +6,23 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.tianzhen.viewpager2.R;
 import com.tianzhen.viewpager2.ui.main.fragment.Placeholder1Fragment;
+import com.tianzhen.viewpager2.ui.main.fragment.Placeholder2Fragment;
 import com.tianzhen.viewpager2.ui.main.fragment.PlaceholderFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+public class SectionsPager1Adapter extends FragmentStatePagerAdapter {
 
-    @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
+    private static final String[] TAB_TITLES = new String[]{"fragment1 tab1", "fragment1 tab2"};
     private final Context mContext;
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm) {
+    public SectionsPager1Adapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
@@ -32,13 +31,13 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        return Placeholder1Fragment.newInstance(position + 1);
+        return PlaceholderFragment.newInstance(position + 1);
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return mContext.getResources().getString(TAB_TITLES[position]);
+        return TAB_TITLES[position];
     }
 
     @Override
