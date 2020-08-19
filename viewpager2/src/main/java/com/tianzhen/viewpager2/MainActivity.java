@@ -6,14 +6,21 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.tianzhen.viewpager2.ui.main.SectionsPager1Adapter;
 import com.tianzhen.viewpager2.ui.main.SectionsPagerAdapter;
+import com.tianzhen.viewpager2.ui.main.fragment.PlaceholderFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,19 +28,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
-        TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
-        FloatingActionButton fab = findViewById(R.id.fab);
-
-        fab.setOnClickListener(new View.OnClickListener() {
+//        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+//        SectionsPager1Adapter sectionsPagerAdapter = new SectionsPager1Adapter(this, getSupportFragmentManager());
+        ViewPager2 viewPager = findViewById(R.id.view_pager);
+//        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.setAdapter(new FragmentStateAdapter(this) {
+            @NonNull
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public Fragment createFragment(int position) {
+                return PlaceholderFragment.newInstance(position);
+            }
+
+            @Override
+            public int getItemCount() {
+                return 2;
             }
         });
+        TabLayout tabs = findViewById(R.id.tabs);
+//        tabs.setupWithViewPager(viewPager);
+        new TabLayoutMediator(tabs, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText("tab" + position);
+            }
+        }).attach();
+
     }
 }
