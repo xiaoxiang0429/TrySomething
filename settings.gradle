@@ -1,3 +1,4 @@
+include ':thread'
 include ':CommonRes'
 include ':CommonSDK'
 include ':module_base'
