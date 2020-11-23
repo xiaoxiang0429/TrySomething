@@ -14,17 +14,22 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.tianzhen.viewpager2.R;
+import com.tianzhen.viewpager2.adapter.BaseBannerAdapter;
 import com.tianzhen.viewpager2.databinding.FragmentMainBinding;
 import com.tianzhen.viewpager2.model.Book;
 import com.tianzhen.viewpager2.ui.adapter.EasyAdapter;
 import com.tianzhen.viewpager2.ui.adapter.ViewHolder;
 import com.tianzhen.viewpager2.ui.main.PageViewModel;
+import com.youth.banner.adapter.BannerAdapter;
+import com.youth.banner.indicator.CircleIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +78,41 @@ public class PlaceholderFragment extends Fragment {
             Bundle savedInstanceState) {
         viewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         initView();
+        bindListener();
+        useBanner();
         return viewBinding.getRoot();
+    }
+
+    private void useBanner() {
+        List<String> lists = new ArrayList<>();
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        lists.add("sd");
+        BaseBannerAdapter bannerAdapter = new BaseBannerAdapter(lists);
+        viewBinding.banner.addBannerLifecycleObserver(this)//添加生命周期观察者
+                .setAdapter(bannerAdapter)
+                .setIndicator(new CircleIndicator(getActivity()))
+                .start();
     }
 
     private void initView() {
@@ -81,6 +120,7 @@ public class PlaceholderFragment extends Fragment {
         books.add(new Book("一座城池", "讲的一座城的事", "韩寒"));
         books.add(new Book("长安乱", "讲的长安的事", "韩寒"));
         books.add(new Book("三重门", "讲的三重门的事", "韩寒"));
+
         viewBinding.viewpager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         viewBinding.viewpager.setAdapter(new FragmentStateAdapter(this) {
             @NonNull
@@ -100,6 +140,28 @@ public class PlaceholderFragment extends Fragment {
                 tab.setText(books.get(position).getTitle());
             }
         }).attach();
+    }
+
+    private void bindListener() {
+        viewBinding.appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset >= 0) {
+                    viewBinding.swipeRefresh.setEnabled(true);
+                } else {
+                    viewBinding.swipeRefresh.setEnabled(false);
+                }
+            }
+        });
+
+        viewBinding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //下拉刷新
+                viewBinding.swipeRefresh.setRefreshing(false);
+            }
+        });
+
     }
 
 }
